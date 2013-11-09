@@ -26,7 +26,6 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from whoosh import index
 from whoosh.qparser import QueryParser
-from django_openid_auth.models import UserOpenID
 
 from main.server import tasks
 
@@ -56,7 +55,7 @@ def cleanup(request):
         # get rid of unused tags
         models.Tag.objects.filter(count=0).delete()
 
-@login_required(redirect_field_name='/openid/login/')
+@login_required(redirect_field_name='/login/')
 def private_message(request, uid):
     "General moderation function"
     user   = request.user
@@ -83,7 +82,7 @@ def private_message(request, uid):
 
     return html.redirect( target.profile.get_absolute_url() )
 
-@login_required(redirect_field_name='/openid/login/')
+@login_required(redirect_field_name='/login/')
 def post_moderate(request, pid, status):
     "General moderation function"
     user = request.user
@@ -98,7 +97,7 @@ def post_moderate(request, pid, status):
     url = models.post_moderate(request=request, user=user, post=post, status=status)
     return html.redirect( url )
 
-@login_required(redirect_field_name='/openid/login/')
+@login_required(redirect_field_name='/login/')
 def user_moderate(request, uid, status):
     "General moderation function"
     user   = request.user
@@ -117,7 +116,7 @@ def user_moderate(request, uid, status):
     return html.redirect( url )
 
 
-@login_required(redirect_field_name='/openid/login/')
+@login_required(redirect_field_name='/login/')
 def user_edit(request, uid):
     "User's profile page"
 
@@ -165,7 +164,7 @@ def user_edit(request, uid):
             url = reverse('main.server.views.user_profile', kwargs=dict(uid=target.id))
             return html.redirect(url)
 
-@login_required(redirect_field_name='/openid/login/')
+@login_required(redirect_field_name='/login/')
 def post_reparent(request, pid, rid=0):
     "Reparent a post"
 
@@ -262,7 +261,7 @@ cheers,
 the BioStar Team
 """
 
-@login_required(redirect_field_name='/openid/login/')
+@login_required(redirect_field_name='/login/')
 def request_merge(request):
     "Generates an account merge request"
 
@@ -302,7 +301,6 @@ def request_merge(request):
 
 def migrate(master, remove):
     "Migrates user data"
-    UserOpenID.objects.filter(user=remove).update(user=master)
     models.Vote.objects.filter(author=remove).update(author=master)
     models.Note.objects.filter(sender=remove).update(sender=master)
     models.Note.objects.filter(target=remove).update(target=master)
@@ -313,7 +311,7 @@ def migrate(master, remove):
     master.profile.score += remove.profile.score
     master.profile.save()
 
-@login_required(redirect_field_name='/openid/login/')
+@login_required(redirect_field_name='/login/')
 def approve_merge(request, master_id, remove_id):
     "Approves an account merge request"
     user = request.user

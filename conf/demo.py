@@ -5,14 +5,14 @@ from main.settings import *
 
 # set the domain administrators
 ADMINS = (
-    ('Istvan Albert', 'istvan.albert@gmail.com'),
+    ('Roman Valls Guimera', 'roman@incf.org'),
 )
 
 # set the site url
-SITE_DOMAIN = 'localhost:8080'
+SITE_DOMAIN = 'neurostars.org'
 
 # set the cookie domain as needed
-SESSION_COOKIE_DOMAIN = ".biostars.org"
+SESSION_COOKIE_DOMAIN = ".neurostars.org"
 
 # set the secret key for the site
 SECRET_KEY = 'my-secret key goes here'
@@ -30,12 +30,12 @@ MIDDLEWARE_CLASSES.extend([
 # database setup
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', 
-        'NAME': 'test-database',                  
-        'USER': 'someuser',                      
-        'PASSWORD': 'somepassword',                  
-        'HOST': '',                      
-        'PORT': '',                      
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'test-database',
+        'USER': 'someuser',
+        'PASSWORD': 'somepassword',
+        'HOST': '',
+        'PORT': '',
     }
 }
 

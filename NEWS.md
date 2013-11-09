@@ -1,6 +1,8 @@
 Tagged Production Releases
 ==========================
 
+NeuroStar 1.2.4 on Nov 8, 2013: Migrated to Django 1.6. To be used for NeuroInformatics.
+
 BioStar 1.2.3 on Sept 5, 2012: added shortcut commands
 
 BioStar 1.2.2 on Aug 24, 2012: changed database schema to support bookmark

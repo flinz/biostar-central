@@ -91,13 +91,6 @@ SERVER_EMAIL = 'default'
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'main.server.email_backend.SSLEmailBackend'
 
-# add external dependecies
-__ZIP_LIBS = [
-    path(__CURR_DIR, '..', 'libs'),
-    path(__CURR_DIR, '..', 'libs', 'libraries.zip'),
-]
-sys.path.extend(__ZIP_LIBS)
-
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -227,18 +220,10 @@ AUTH_PROFILE_MODULE = "server.UserProfile"
 ROOT_URLCONF = 'main.urls'
 
 AUTHENTICATION_BACKENDS = (
-    'django_openid_auth.auth.OpenIDBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
-OPENID_CREATE_USERS = True
-OPENID_UPDATE_DETAILS_FROM_SREG = False
-OPENID_USE_AS_ADMIN_LOGIN = True
-
-# allow migration based on user email
-ALLOW_OPENID_MIGRATION = True
-
-LOGIN_URL = '/openid/login/'
+LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 
 INSTALLED_APPS = [
@@ -260,7 +245,6 @@ INSTALLED_APPS = [
     'djcelery',
     'pipeline',
     'main.server',
-    'django_openid_auth',
     'django.contrib.sitemaps',
 ]
 

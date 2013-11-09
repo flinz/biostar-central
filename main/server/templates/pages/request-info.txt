@@ -9,7 +9,7 @@ Question: {{params.post.title}}
 
 Link: http://{{params.site_domain}}{{params.post.get_short_url}}
 
-Sign In to BioStar Using OpenID at http://www.biostars.org/openid/login/
+Sign In to BioStar at http://www.biostars.org/login/
 
 Any insight you could provide would be greatly appreciated!
 

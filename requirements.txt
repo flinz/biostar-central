@@ -1,3 +1,6 @@
+whoosh
+html5lib
+BeautifulSoup
 django
 south
 django_celery

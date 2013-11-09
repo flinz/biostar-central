@@ -1,7 +1,7 @@
 """
 Indexes all post content
-"""    
-    
+"""
+
 import shutil, os, gc
 from django import forms
 from django.conf import settings
@@ -9,7 +9,7 @@ from main.server.const import *
 from itertools import *
 from main.server import html, const, formdef
 from main.server.html import get_page
-from whoosh import store, fields, index, highlight
+from whoosh import fields, index, highlight
 from whoosh.qparser import QueryParser,  MultifieldParser, WildcardPlugin
 from whoosh.analysis import StemmingAnalyzer, StopFilter, StandardAnalyzer
 from django.contrib import messages
@@ -23,12 +23,12 @@ stoplist = "read reads lab most post posted posting\
 
 stem = StemmingAnalyzer(stoplist=stoplist, minsize=3, maxsize=40, cachesize=-1)
 stop = StopFilter()
-full = stem | stop 
+full = stem | stop
 
 SCHEMA = fields.Schema(
     pid     = fields.NUMERIC(stored=True, unique=True),
     title   = fields.TEXT(analyzer=full, stored=True),
-    content = fields.TEXT(analyzer=full, stored=True), 
+    content = fields.TEXT(analyzer=full, stored=True),
     type    = fields.TEXT(stored=True),
 )
 
@@ -37,13 +37,13 @@ def initialize(sender=None, **kwargs):
     if sender.__name__ != 'main.server.models':
         return
     path = settings.WHOOSH_INDEX
-    
+
     if not os.path.exists(path):
         print('*** creating %s' % path)
         os.mkdir(path)
         print ('*** initializing search index %s' % path)
         ix = index.create_in(path, SCHEMA)
-    
+
 choices = [
     ("all", "All types"), ("top", "Top level"),  ("Question", "Questions"), ("Tutorial", "Tutorials"), ("Forum", "Forum"),
 ]
@@ -52,7 +52,7 @@ VERBOSE = 1
 def info(msg):
     if VERBOSE:
         print "*** %s" % msg
-        
+
 class SearchForm(forms.Form):
     "A form representing a new question"
     q = forms.CharField(max_length=200,  initial="", widget=forms.TextInput(attrs={'size':'50', 'class': 'span6', 'placeholder': 'Search Biostar'}))
@@ -68,7 +68,7 @@ class search_error_wrapper(object):
     "Used as decorator to display  errors in the search calls"
     def __init__(self, f):
         self.f = f
-        
+
     def __call__(self, *args, **kwds):
         try:
             # first parameter is the request
@@ -78,15 +78,15 @@ class search_error_wrapper(object):
             request = kwds.get('request') or args[0]
             messages.error(request, "Search error: %s" % exc)
             return []
-            
-@search_error_wrapper         
+
+@search_error_wrapper
 def search_results(request, text, subset=None):
     "Returns search results for a text"
     text = text.strip()[:200]
-    
+
     if not text:
         return []
-    
+
     ix = index.open_dir(settings.WHOOSH_INDEX)
     searcher = ix.searcher()
     parser   = MultifieldParser(["content"], schema=ix.schema)
@@ -120,13 +120,13 @@ def get_subset(word):
 def main(request):
     "Main search"
     counts = request.session.get(SESSION_POST_COUNT, {})
-    
+
     q = request.GET.get('q','') # query
     t = request.GET.get('t','all')  # type
-    
+
     params = html.Params(tab='search', q=q, sort='', t=t)
     subset = get_subset(t)
-   
+
     if params.q:
         form = SearchForm(request.GET)
         results  = search_results(request=request, text=params.q, subset=subset)
@@ -149,21 +149,21 @@ def main(request):
 NUM_TERMS = 10
 TOP_COUNT = 20
 
-@search_error_wrapper  
+@search_error_wrapper
 def more_like_this(request, pid):
     ix = index.open_dir(settings.WHOOSH_INDEX)
     searcher = ix.searcher()
     qp = QueryParser("pid", schema=ix.schema)
     qq = qp.parse(pid)
     doc = searcher.search(qq)
-     
+
     first = doc[0]
     title = "%s: %s" % (first['type'], first['title'])
 
     res = first.more_like_this("content", numterms=NUM_TERMS)
     res = map(decorate, res)
     ix.close()
-    
+
     messages.info(request, 'Posts similar to <b>%s</b>' % title)
 
     return res
@@ -173,7 +173,7 @@ def print_timing(func):
     def wrapper(*args, **kwds):
         start = time.time()
         res = func(*args, **kwds)
-        end = time.time() 
+        end = time.time()
         diff = (end - start ) * 1000
         print '**** function %s in %0.3f ms' % (func.func_name, diff)
         return res
@@ -193,13 +193,13 @@ def more(request, pid):
 
 def update(post, handler=None):
     "Adds/updates a post to the index"
-    
+
     if handler:
         writer = handler
     else:
         ix = index.open_dir(settings.WHOOSH_INDEX)
         writer = ix.writer()
-        
+
     pid = post.id
     content = unicode(post.content)
     title  = unicode(post.title)
@@ -210,7 +210,7 @@ def update(post, handler=None):
         content = unicode(post.content)
 
     writer.update_document(pid=pid, content=content, title=title, type=type)
-    
+
     # only commit if this was opened here
     if not handler:
         writer.commit()
@@ -239,7 +239,7 @@ def full_index():
     """
     Runs indexing on all changed posts
     """
-   
+
     import glob
 
     path = "%s/*" % settings.WHOOSH_INDEX
@@ -249,17 +249,17 @@ def full_index():
     # get a count of posts
     count = get_posts().count()
     info("indexing %s posts" % count)
-   
+
     # index the posts
     posts = get_posts().all()
     add_batch(posts)
-    
+
     # update the attribute
     posts = get_posts().update(changed=False)
-        
+
 if __name__ == '__main__':
     import doctest, optparse
-   
+
     parser = optparse.OptionParser()
     parser.add_option("--reset", dest="reset",  action="store_true", default=False, help="resets the index")
 

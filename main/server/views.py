@@ -19,7 +19,7 @@ from django.contrib import messages
 from django.conf import settings
 from django.http import HttpResponse
 from django.db.models import Q
-# the openid association model
+# the association model
 
 from django.core.urlresolvers import reverse
 from django.db.models import Count, Max, Min
@@ -504,12 +504,12 @@ def post_show(request, pid):
 def redirect(post):
     return html.redirect( post.get_absolute_url() )
 
-@login_required(redirect_field_name='/openid/login/')
+@login_required(redirect_field_name='/login/')
 def new_comment(request, pid=0):
     "Shortcut to new comments"
     return new_post(request=request, pid=pid, post_type=POST_COMMENT)
 
-@login_required(redirect_field_name='/openid/login/')
+@login_required(redirect_field_name='/login/')
 def new_answer(request, pid):
     return new_post(request=request, pid=pid, post_type=POST_ANSWER)
 
@@ -521,7 +521,7 @@ def safe_context(key_name, data):
     except Exception, exc:
         return "context error: %s" % exc
 
-@login_required(redirect_field_name='/openid/login/')
+@login_required(redirect_field_name='/login/')
 def new_post(request, pid=0, post_type=POST_QUESTION, data=None):
     "Handles the creation of a new post"
 
@@ -614,7 +614,7 @@ def new_post(request, pid=0, post_type=POST_QUESTION, data=None):
 
     return redirect(post)
 
-@login_required(redirect_field_name='/openid/login/')
+@login_required(redirect_field_name='/login/')
 def post_edit(request, pid=0):
     "Handles the editing of an existing post"
 

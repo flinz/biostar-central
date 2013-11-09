@@ -16,7 +16,7 @@ urlpatterns = patterns('main.server',
 
     # main index page
     url(r'^$', 'views.index', name='index'),
-    
+
     url(r'^search/$', 'search.main', name="search"),
     url(r'^more/like/(?P<pid>\d+)/$', 'search.more', name="more"),
 
@@ -34,24 +34,24 @@ urlpatterns = patterns('main.server',
 
     # show by content type
     url(r'^show/(?P<tab>\w+)/$', 'views.index', name="show"),
-    
+
     # show tagged posts
     url(r'^show/tag/(?P<tag_name>.+)/$', 'views.show_tag', name="show-tag"),
-    
+
     # show posts by user
     url(r'^show/user/(?P<uid>\d+)/$', 'views.show_user', name="show-user"),
     url(r'^show/user/(?P<uid>\d+)/(?P<post_type>\w+)/$', 'views.show_user', name="show-user-content"),
     url(r'^linkout/(?P<pid>\d+)/$', 'views.linkout', name="linkout"),
-    
+
     # urls for the navigation bar
     url(r'^tag/list/$', 'views.tag_list', name="tag-list"),
     url(r'^user/list/$', 'views.user_list', name="user-list"),
     url(r'^badge/list/$', 'views.badge_list', name="badge-list"),
-    
-    
+
+
     # user edit page
     url(r'^user/edit/(?P<uid>\d+)/$', 'action.user_edit', name="user-edit"),
-    
+
     # new style user profile
     url(r'^u/(?P<uid>\d+)/$', 'views.user_profile', name="user-profile"),
     url(r'^u/(?P<uid>\d+)/(?P<tab>\w+)/$', 'views.user_profile', name="user-profile-tab"),
@@ -59,14 +59,14 @@ urlpatterns = patterns('main.server',
     # old style user profile
     url(r'^user/profile/(?P<uid>\d+)/$', 'views.user_profile_redirect', name="user-profile-redirect"),
     url(r'^user/profile/(?P<uid>\d+)/(?P<tab>\w+)/$', 'views.user_profile_redirect', name="user-profile-tab-redirect"),
-        
+
     # moderation handlers
     #(r'^cleanup/$', 'action.cleanup'),
 
     # badges
     url(r'^badge/show/(?P<bid>\d+)/$', 'action.badge_show', name="badge-show"),
-    
-    # revisions    
+
+    # revisions
     url(r'^revision/show/(?P<pid>\d+)/$', 'views.revision_show', name="revision-show"),
 
     # new-style (short) post handlers
@@ -76,7 +76,7 @@ urlpatterns = patterns('main.server',
     url(r'^post/show/(?P<pid>\d+)/$', 'views.post_show_redirect', name="post-show-redirect"),
     url(r'^post/show/(?P<pid>\d+)/([-\w]+)/$', 'views.post_show_redirect', name="post-show-slug-redirect"),
     url(r'^post/redirect/(?P<pid>\d+)/$', 'views.post_redirect', name="post-redirect"),
-    
+
     # turned off reparenting for now
     #url(r'^post/reparent/(?P<pid>\d+)/$', 'action.post_reparent', name="post-reparent"),
 
@@ -87,17 +87,17 @@ urlpatterns = patterns('main.server',
     url(r'^pm/(?P<uid>\d+)/$','action.private_message', name="private-message"),
 
     # moderation views
-    url(r'^user/moderate/(?P<uid>\d+)/(?P<status>\w+)/$','action.user_moderate', name="user-moderate"),    
+    url(r'^user/moderate/(?P<uid>\d+)/(?P<status>\w+)/$','action.user_moderate', name="user-moderate"),
     url(r'^post/moderate/(?P<pid>\d+)/(?P<status>\w+)/$','action.post_moderate', name="post-moderate"),
     url(r'^merge/$','action.request_merge', name="request-merge"),
     url(r'^approve_merge/(?P<master_id>\d+)/(?P<remove_id>\d+)/$','action.approve_merge', name="approve-merge"),
     url(r'^request/info/(?P<pid>\d+)/$','pages.request_info', name="request-info"),
-    
+
     # handles new post
     url(r'^new/post/$','views.new_post', name="new-post"),
     url(r'^new/answer/(?P<pid>\d+)/$','views.new_answer', name="new-answer"),
     url(r'^new/comment/(?P<pid>\d+)/$','views.new_comment', name="new-comment"),
-    
+
     # static pages
     url(r'^about/$','pages.about', name='about'),
     url(r'^rss/$','pages.rss', name='rss'),
@@ -111,10 +111,10 @@ urlpatterns = patterns('main.server',
 
     # lists all moderator actions
     url(r'^modlog/list/$', 'views.modlog_list', name="modlog-list"),
-  
+
     # destroys a post
     url(r'^comment/delete/(?P<pid>\d+)/$', 'ajax.comment_delete', name="comment-delete"),
-      
+
     # voting handler
     url(r'^vote/$', 'ajax.vote', name="vote"),
     url(r'^tagcomplete/$', 'ajax.tagcomplete', name="tagcomplete"),
@@ -122,7 +122,7 @@ urlpatterns = patterns('main.server',
 
     # clear all notifications
     url(r'^note/clear/(?P<uid>\d+)/$','action.note_clear', name="note-clear"),
-   
+
     # redirecting to new post
     url(r'^questions/(?P<pid>\d+)/$','action.redirect_post', name="redirect-short"),
     url(r'^questions/(?P<pid>\d+)/([-\w]+)/$','action.redirect_post', name="redirect-post"),
@@ -139,7 +139,7 @@ urlpatterns = patterns('main.server',
 
     # test login, used during debugging
     url(r'^test/login/(?P<uid>\d+)/(?P<token>[\w\d]+)/$','action.test_login', name="test-login"),
-   
+
     # json api for stat generation
     url(r'^api/traffic/$', 'api.traffic', name='stats-traffic'),
 
@@ -162,20 +162,20 @@ urlpatterns += patterns('',
     url(r'^blog/list/$', ListView.as_view(
         queryset = models.Blog.objects.all().select_related('author__profile'),
         template_name='generic/blog.list.html'), name='blog-list'),
-    
+
      # matching the robots.txt
     url(r'^robots\.txt$', TemplateView.as_view(template_name="robots.txt"), name='robots'),
 
 )
 
 #
-# RSS Feeds 
+# RSS Feeds
 #
 from server.feeds import LatestEntriesFeed, NotificationFeed, MyTagsFeed, PostTypeFeed
 from server.feeds import TagsFeed, PostFeed, UserFeed
 
 urlpatterns += patterns('',
-    
+
     # RSS feeds
     url(r'^feeds/latest/$', LatestEntriesFeed(), name='latest-feed' ),
     url(r'^feeds/messages/(?P<uuid>[a-z0-9]+)/$', NotificationFeed(), name='notification-feed' ),
@@ -184,9 +184,9 @@ urlpatterns += patterns('',
     url(r'^feeds/post/(?P<text>[\w\-_\+]+)/$', PostFeed(), name='post-feed' ),
     url(r'^feeds/user/(?P<text>[\w\-_\+]+)/$', UserFeed(), name='user-feed' ),
     url(r'^feeds/type/(?P<text>[\w\-_\+]+)/$', PostTypeFeed(), name='post-type-feed' ),
-    
-    # openid authentication
-    url(r'^openid/', include('django_openid_auth.urls'), name='openid-login'),
+
+    # authentication
+    url(r'^login/$', 'django.contrib.auth.views.login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout',  {'next_page':'/'}, name='logout'),
 
     # Enable the admin:
@@ -196,4 +196,4 @@ urlpatterns += patterns('',
 
 urlpatterns += staticfiles_urlpatterns()
 
- 
+
