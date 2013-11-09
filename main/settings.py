@@ -108,6 +108,7 @@ SITE_ID = 1
 
 # the dommain for this site
 SITE_DOMAIN = 'localhost:8080'
+SITE_URL = 'http://localhost'
 
 # added a custom test runner
 TEST_RUNNER = 'server.tests.runner.BiostarTest'
@@ -211,6 +212,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.i18n',
+    'django_browserid.context_processors.browserid',
     "main.context.extras",
     "main.context.popular_tags"
 )
@@ -221,13 +223,17 @@ ROOT_URLCONF = 'main.urls'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
+    'django_browserid.auth.BrowserIDBackend'
 )
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL_FAILURE = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 INSTALLED_APPS = [
     'django.contrib.auth',
+    'django_browserid',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',

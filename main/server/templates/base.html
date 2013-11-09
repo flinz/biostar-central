@@ -4,7 +4,7 @@
 {% load widgets %}
 {% load humanize %}
 {% load compressed %}
-
+{% load browserid %}
 
 {% if not debug %}
     {% compressed_css '*' %}
@@ -12,6 +12,7 @@
 {% endif %}
 <html lang="en">
 <head>
+    {% browserid_css %}
     <meta charset="utf-8">
     <title>{% block title %}Bioinformatics at BioStar{% endblock %}</title>
     <meta name="description" content="">
@@ -142,10 +143,12 @@
 </head>
 
 <body>
+{% browserid_info %}
 
 <div style="position:fixed; font-size:10px;bottom:0px;left:0px;color:#999999;" id="traffic-stats">
     <div align="center">Traffic: {{ traffic }} ip/hr</div>
 </div>
+
 
 {#    {% block nav_bar %}#}
 {#        {% nav_bar user params %}#}
@@ -245,5 +248,6 @@
 </div>
 <!-- /container -->
 
+{% browserid_js %}
 </body>
 </html>

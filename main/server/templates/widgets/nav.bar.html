@@ -1,8 +1,9 @@
 {% load i18n %}
 {% load basic %}
- {% load widgets %}
- {% load staticfiles %}
- {% load url from future %}
+{% load widgets %}
+{% load staticfiles %}
+{% load url from future %}
+{% load browserid %}
 
 <div class="pull-left topbar-user topbar-section">
     <ul class="nav">
@@ -14,10 +15,10 @@
                 </a>
                 {% flair user %} <b>{% bignum user.profile.get_score %}</b>
             </li>
-            <li><a href="/logout/?next_page=/">{% trans "log out" %}</a></li>
+            <li><a href="/logout/?next_page=/">{% browserid_logout text="log out" %}</a></li>
         {% else %}
             <li>
-                <a href='/login/' rel="nofollow"><i class="icon-user"></i> {% trans "Sign In" %}</a>
+                <a href='/browserid/' rel="nofollow"><i class="icon-user"></i> {% browserid_login text="Sign In" %}</a>
             </li>
         {% endif %}
     </ul>
@@ -32,5 +33,3 @@
         <li><a href="{% url 'main.server.pages.rss' %}">{% trans "rss" %}</a></li>
     </ul>
 </div>
-
-
