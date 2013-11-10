@@ -17,9 +17,12 @@
             </li>
             <li><a href="/logout/?next_page=/">{% browserid_logout text="log out" %}</a></li>
         {% else %}
+            {% browserid_login text='Login' %}
+        {% comment %}
             <li>
-                <a href='/browserid/' rel="nofollow"><i class="icon-user"></i> {% browserid_login text="Sign In" %}</a>
+                <a href='/login/'><i class="icon-user"></i>{% browserid_login text='Login' %}</a>
             </li>
+        {% endcomment %}
         {% endif %}
     </ul>
 

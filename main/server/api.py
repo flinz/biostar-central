@@ -4,14 +4,13 @@ Too many viewa in the main views.py
 Started refactoring some here, this will eventually store all form based
 actions whereas the main views.py will contain url based actions.
 """
-import os, sys, traceback, time
+import os, sys, traceback, time, json
 from datetime import datetime, timedelta
 from main.server import html, models
 from main.server.const import *
 from django.conf import settings
 from django.http import HttpResponse
 from django.db.models import Q
-from django.utils import simplejson
 
 # earliest date is 1155 days ago
 
@@ -33,7 +32,7 @@ class json_wrapper(object):
             traceback.print_exc()
             data = dict(error='%s' % exc)
 
-        resp = HttpResponse(simplejson.dumps(data, sort_keys=True, indent=4), mimetype="application/json")
+        resp = HttpResponse(json.dumps(data, sort_keys=True, indent=4), mimetype="application/json")
         return resp
 
 def date_interval(days):
@@ -139,7 +138,7 @@ def stats(request, days=1):
 
     if not os.path.isfile(fpath):
         data = make_stats(days)
-        json = simplejson.dumps(data, sort_keys=True, indent=4)
+        json = json.dumps(data, sort_keys=True, indent=4)
         print '*** writing api file=%s' % fpath
         fp = file(fpath, 'wt')
         fp.write(json)

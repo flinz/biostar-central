@@ -186,7 +186,8 @@ urlpatterns += patterns('',
     url(r'^feeds/type/(?P<text>[\w\-_\+]+)/$', PostTypeFeed(), name='post-type-feed' ),
 
     # authentication
-    url(r'^browserid/$', include('django_browserid.urls')),
+    url(r'^browserid/', include('django_browserid.urls')),
+    #url(r'^login/', Verify.as_view(), name='browserid_login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout',  {'next_page':'/'}, name='logout'),
 
     # Enable the admin:

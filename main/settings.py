@@ -2,10 +2,7 @@
 # default setting for the development server
 # modify these settings for any publicly facing website
 #
-import os, sys, re
-
-# database migrations via Django South
-import south
+import os, sys
 
 # we now required django celery to be present
 import djcelery
@@ -206,15 +203,15 @@ TEMPLATE_DIRS = [
 ]
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.contrib.auth.context_processors.auth",
-    "django.core.context_processors.debug",
+    'django.contrib.auth.context_processors.auth',
+    'django_browserid.context_processors.browserid',
+    'django.core.context_processors.debug',
     'django.core.context_processors.request',
     'django.core.context_processors.static',
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.i18n',
-    'django_browserid.context_processors.browserid',
-    "main.context.extras",
-    "main.context.popular_tags"
+    'main.context.extras',
+    'main.context.popular_tags'
 )
 
 AUTH_PROFILE_MODULE = "server.UserProfile"
@@ -225,6 +222,9 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'django_browserid.auth.BrowserIDBackend'
 )
+
+# Specify audiences (protocol, domain, port) that your site will handle.
+BROWSERID_AUDIENCES = ['http://localhost:8080', 'https://neurostars.org']
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
@@ -304,6 +304,10 @@ LOGGING = {
         'main.server.search': {
             'handlers': ['console'],
             'level': 'INFO',
+        },
+           'django_browserid': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
         }
     }
 }
