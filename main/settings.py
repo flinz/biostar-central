@@ -105,7 +105,7 @@ SITE_ID = 1
 
 # the dommain for this site
 SITE_DOMAIN = 'localhost:8080'
-SITE_URL = 'http://localhost'
+SITE_URL = 'http://localhost:8080'
 
 # added a custom test runner
 TEST_RUNNER = 'server.tests.runner.BiostarTest'
@@ -398,7 +398,6 @@ USER_PILL_BAR = [
     ("unanswered", "/show/unanswered/", "Unanswered", "Unanswered" ),
     ("forum", "/show/forum/", "Forum", "Forum" ),
     ("howto", "/show/howto/", "How To", "howto" ),
-    #("galaxy", "/show/galaxy/", "Galaxy", "Galaxy" ),
     ("jobs", "/show/jobs/", "Jobs", "Job" ),
     ("planet", "/show/planet/", "Planet", "Blog" ),
 

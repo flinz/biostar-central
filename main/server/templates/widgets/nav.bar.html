@@ -6,25 +6,6 @@
 {% load browserid %}
 
 <div class="pull-left topbar-user topbar-section">
-    <ul class="nav">
-        {% if user.is_authenticated %}
-            <li>
-                <a style="display: inline;" href="{% url 'main.server.views.user_profile' user.id %}">
-                    <i class="icon-user"></i>
-                    {{ user.profile.display_name }}
-                </a>
-                {% flair user %} <b>{% bignum user.profile.get_score %}</b>
-            </li>
-            <li><a href="/logout/?next_page=/">{% browserid_logout text="log out" %}</a></li>
-        {% else %}
-            {% browserid_login text='Login' %}
-        {% comment %}
-            <li>
-                <a href='/login/'><i class="icon-user"></i>{% browserid_login text='Login' %}</a>
-            </li>
-        {% endcomment %}
-        {% endif %}
-    </ul>
 
 </div>
 

@@ -149,11 +149,6 @@
     <div align="center">Traffic: {{ traffic }} ip/hr</div>
 </div>
 
-
-{#    {% block nav_bar %}#}
-{#        {% nav_bar user params %}#}
-{#    {% endblock %}#}
-
 <div class="container">
 
     {% block adbox %}
@@ -183,6 +178,12 @@
 
                     <div class="nav-collapse">
                         {% nav_bar user params %}
+                            {% if user.is_authenticated %}
+                                <a style="display: inline;" href="{% url 'main.server.views.user_profile' user.id %}">
+                                {% browserid_logout %}
+                            {% else %}
+                                {% browserid_login %}
+                            {% endif %}
                     </div>
                 </div>
             </div>
