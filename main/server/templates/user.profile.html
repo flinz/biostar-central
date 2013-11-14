@@ -105,7 +105,7 @@
                 <a class="btn btn-primary pm-control" id="pm-toggle" href="#"><i class="icon-comment icon-white"></i> Send Message</a>
 
                 {% if target.writeable %}
-                     <a class="btn btn-success" href="{% url main.server.action.user_edit target.id %}"><i class="icon-edit icon-white"></i> Edit Info</a>
+                     <a class="btn btn-success" href={% url "main.server.action.user_edit" target.id %}><i class="icon-edit icon-white"></i> Edit Info</a>
                 {% endif %}
 
 
@@ -113,14 +113,14 @@
         {% if target.writeable and user != target%}
 
             {% if target.profile.get_status %}
-                 <a class="btn btn-success" href="{% url main.server.action.user_moderate target.id 'reinstate' %}"><i class="icon-edit icon-white"></i> Reinstate</a>
+                 <a class="btn btn-success" href={% url "main.server.action.user_moderate" target.id 'reinstate' %}><i class="icon-edit icon-white"></i> Reinstate</a>
             {% else %}
-                <a class="btn btn-warning pull-right" href="{% url main.server.action.user_moderate target.id 'suspend' %}"><i class="icon-remove-sign icon-white"></i> Suspend</a>
+                <a class="btn btn-warning pull-right" href={% url "main.server.action.user_moderate" target.id 'suspend' %}><i class="icon-remove-sign icon-white"></i> Suspend</a>
             {% endif %}
 
             {%  if user.profile.is_admin %}
                 <div style="padding-top: 10px;">
-                    <a class="btn btn-danger pull-right" href="{% url main.server.action.user_moderate target.id 'ban' %}"><i class="icon-screenshot icon-white"></i> -- Ban! --</a>
+                    <a class="btn btn-danger pull-right" href={% url "main.server.action.user_moderate" target.id 'ban' %}><i class="icon-screenshot icon-white"></i> -- Ban! --</a>
                 </div>
             {%  endif %}
             
@@ -148,10 +148,10 @@
     <div class="span12">
         <div class="title" id="status">Status</div>
         <div class="par">
-            {{ target.profile.display_name }} has contributed <a href="{% url main.server.views.show_user target.id %}" >{{params.post_count}} posts</a>: 
-             <a href="{% url main.server.views.show_user target.id 'question' %}" >{{params.question_count}} questions</a>, 
-             <a href="{% url main.server.views.show_user target.id 'answer' %}" >{{params.answer_count}} answers</a> and 
-             <a href="{% url main.server.views.show_user target.id 'comment' %}" >{{params.comment_count}} comments</a>. 
+            {{ target.profile.display_name }} has contributed <a href={% url "main.server.views.show_user" target.id %} >{{params.post_count}} posts</a>: 
+             <a href={% url "main.server.views.show_user" target.id 'question' %} >{{params.question_count}} questions</a>, 
+             <a href={% url "main.server.views.show_user" target.id 'answer' %} >{{params.answer_count}} answers</a> and 
+             <a href={% url "main.server.views.show_user" target.id 'comment' %} >{{params.comment_count}} comments</a>. 
             User  has voted <b>{{params.vote_count}}</b> times  and has earned <b>{{params.award_count}}</b> badges. 
         </div>
     </div>
@@ -161,14 +161,14 @@
     <div class="span12">
         {# this the tabs that get selected for different pages #}
         <ul class="nav nav-tabs">
-            <li {% active 'activity' params.tab %}><a href="{% url main.server.views.user_profile target.id %}" >Notifications{% show_value params.note_count %}</a></li>
-            <li {% active 'created' params.tab %}><a href="{% url main.server.views.user_profile target.id 'created' %}" >Content Created</a></li>
-            <li {% active 'bookmarks' params.tab %}><a href="{% url main.server.views.user_profile target.id 'bookmarks' %}" >Bookmarks{% show_value params.bookmarks_count %}</a></li>
-            <li {% active 'votes' params.tab %}><a href="{% url main.server.views.user_profile target.id 'votes' %}" >Upvoted Posts</a></li>
-            <li {% active 'supporters' params.tab %}><a href="{% url main.server.views.user_profile target.id 'supporters' %}" >Supporters</a></li>
-            <li {% active 'badges' params.tab %}><a href="{% url main.server.views.user_profile target.id 'badges' %}" >Badges{% show_value params.award_count %}</a></li>
+            <li {% active 'activity' params.tab %}><a href={% url "main.server.views.user_profile" target.id %} >Notifications{% show_value params.note_count %}</a></li>
+            <li {% active 'created' params.tab %}><a href={% url "main.server.views.user_profile" target.id 'created' %} >Content Created</a></li>
+            <li {% active 'bookmarks' params.tab %}><a href={% url "main.server.views.user_profile" target.id 'bookmarks' %} >Bookmarks{% show_value params.bookmarks_count %}</a></li>
+            <li {% active 'votes' params.tab %}><a href={% url "main.server.views.user_profile" target.id 'votes' %} >Upvoted Posts</a></li>
+            <li {% active 'supporters' params.tab %}><a href={% url "main.server.views.user_profile" target.id 'supporters' %} >Supporters</a></li>
+            <li {% active 'badges' params.tab %}><a href={% url "main.server.views.user_profile" target.id 'badges' %} >Badges{% show_value params.award_count %}</a></li>
             {% if target.profile.can_moderate %}
-                <li {% active 'moderator' params.tab %}><a href="{% url main.server.views.user_profile target.id 'moderator' %}" >Moderator Actions</a></li>
+                <li {% active 'moderator' params.tab %}><a href={% url "main.server.views.user_profile" target.id 'moderator' %} >Moderator Actions</a></li>
             {% endif %}
         </ul>
     </div>
@@ -181,7 +181,7 @@
     
     <div class="par">
         {% trans 'Activity on posts that this user has interacted with. See th' %}
-        e  <a href="{% url main.server.pages.rss %}">RSS</a> {% trans 'page on how to set up feeds.' %}
+        e  <a href={% url "main.server.pages.rss" %}>RSS</a> {% trans 'page on how to set up feeds.' %}
 
     </div>
     
@@ -217,7 +217,7 @@
     <div class="par">
         {% trans 'Content created by' %}
          {{target.profile.display_name}}.{% trans 'See the' %}
-           <a href="{% url main.server.pages.rss %}">RSS</a> {% trans 'page on how to set up feeds.' %}
+           <a href={% url "main.server.pages.rss" %}>RSS</a> {% trans 'page on how to set up feeds.' %}
 
     </div>
     <div class="note-list">

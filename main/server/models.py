@@ -629,8 +629,9 @@ def post_create_notification(post):
     authors = set( [ root.author ] )
 
     # add users that want to just follow the post
-    for row in Watcher.objects.filter(pk=post.id, type=Watcher.NOTE).select_related('user'):
-        authors.add(row.user)
+    #XXX: Watcher not defined?
+    #for row in Watcher.objects.filter(pk=post.id, type=Watcher.NOTE).select_related('user'):
+    #    authors.add(row.user)
 
     for child in Post.objects.filter(root=root).select_related('author'):
         authors.add(child.author)
@@ -638,8 +639,8 @@ def post_create_notification(post):
     text = notegen.post_action(user=post.author, post=post)
 
     # generate emails for people that want to follow a post via email
-    for row in Watcher.objects.filter(pk=post.id, type=Watcher.EMAIL).select_related('user'):
-        tasks.send_test_email()
+    #XXX for row in Watcher.objects.filter(pk=post.id, type=Watcher.EMAIL).select_related('user'):
+    #    tasks.send_test_email()
 
     for target in authors:
         unread = (target != post.author) # the unread flag will be off for the post author
