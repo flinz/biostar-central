@@ -29,7 +29,7 @@ TEMPLATE_STRING_IF_INVALID = "*** MISSING ***"
 SESSION_UPDATE_TIME = 10 * 60  # in seconds
 
 ADMINS = (
-    ('Default Admin', 'your-mail-here@your-server-here.com'),
+    ('Roman Valls Guimera', 'roman+neurostars.org@incf.org'),
 )
 
 ADMIN_EMAILS = [ r[1] for r in ADMINS ]
@@ -69,15 +69,14 @@ PLANET_DIR = path(HOME_DIR, 'db', 'planet')
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
+        'AUTOCOMMIT': True, # Default in Django 1.6, but still does not work
         # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': DATABASE_NAME, # Or path to database file if using sqlite3.
         'USER': '', # Not used with sqlite3.
         'PASSWORD': '', # Not used with sqlite3.
         'HOST': '', # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '', # Set to empty string for default. Not used with sqlite3.
-        'AUTOCOMMIT': True
     },
-
 }
 
 # email specific settings
@@ -97,7 +96,7 @@ EMAIL_BACKEND = 'main.server.email_backend.SSLEmailBackend'
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'Europe/Stockholm'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -188,7 +187,6 @@ DEBUG_TOOLBAR_CONFIG = {
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache' if DEBUG else 'django.core.cache.backends.locmem.LocMemCache',
-        #'BACKEND':  'django.core.cache.backends.locmem.LocMemCache',
         'LOCATION': 'unique-snowflake'
     }
 }
@@ -244,9 +242,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django_markwhat',
     'django.contrib.messages',
-    # Uncomment the next line to enable the admin:
     'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'kombu.transport.django',
     'south',
@@ -345,7 +341,7 @@ MAX_POST_SIZE = 20000
 RECENT_VOTE_COUNT = 10
 RECENT_TAG_COUNT = 30
 # set the tag names are to be displayed on the main page
-IMPORTANT_TAG_NAMES = "rna-seq chip-seq assembly snp metagenomics vcf cnv mirna indel bwa bowtie bedtools biopython bioperl".split()
+IMPORTANT_TAG_NAMES = "neuron nidash fmri eeg meg".split()
 
 
 # the interval specified in hours
@@ -379,7 +375,6 @@ ANON_PILL_BAR = [
     ("unanswered", "/show/unanswered/", "Unanswered", "Unanswered" ),
     ("forum", "/show/forum/", "Forum", "Forum" ),
     ("howto", "/show/howto/", "How To", "howto" ),
-    #("galaxy", "/show/galaxy/", "Galaxy", "Galaxy" ),
     ("jobs", "/show/jobs/", "Jobs", "Job" ),
     ("planet", "/show/planet/", "Planet", "Blog" ),
 
@@ -405,7 +400,7 @@ USER_PILL_BAR = [
 
 ]
 
-SHOW_ADS = True
+SHOW_ADS = False
 
 #
 # remapping the templates to local versions
@@ -421,10 +416,6 @@ TEMPLATE_ROWS = {
 
 # how long will an ad be active by default
 DEFAULT_AD_EXPIRATION = 1
-
-# used during testing external authentication
-EXTERNAL_AUTHENICATION_TEST_URL=""
-EXTERNAL_AUTHENICATION_TEST_KEY="TEST-KEY"
 
 # version check, we can do it at the end since
 # the version is only required in subsequent modules
