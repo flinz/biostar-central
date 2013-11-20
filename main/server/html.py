@@ -15,17 +15,46 @@ from datetime import datetime, timedelta
 from math import log
 from main.server import autolink
 
-import re
-import html5lib
-from html5lib import sanitizer
-import markdown2x
+# Sanitize HTML against XSS & co
+from html5lib import HTMLParser
+from html5lib.tokenizer import HTMLTokenizer
+from html5lib.sanitizer import HTMLSanitizerMixin
+from cgi import escape
 
-from itertools import groupby
 from django.template import Context, Template
+import markdown2x
 
 # safe string transformation
 import string
 SAFE_TAG = set(string.ascii_letters + string.digits + "._-")
+
+# https://github.com/html5lib/html5lib-python/issues/9
+class Sanitizer(HTMLTokenizer):
+    def __init__(self, *a, **kw):
+        HTMLTokenizer.__init__(self, *a, **kw)
+        self._saner = HTMLSanitizerMixin()
+
+    def __iter__(self):
+        for token in HTMLTokenizer.__iter__(self):
+            saner = self._saner.sanitize_token(token)
+            if saner: yield saner
+
+def sanitize(value):
+    "HTML sanitizer based on html5lib"
+    PARSER = HTMLParser(tokenizer=Sanitizer)
+
+    print value
+    try:
+        h = _toxml(PARSER.parseFragment(value))
+        unicode_or_bust(h)
+    except Exception, exc:
+        h = "*** unable to parse content: %s" % exc
+    return h
+
+def _toxml(value):
+    tree = treebuilders.getTreeBuilder("etree")
+    result_bytes = tree.implementation.tostring(value, encoding="utf-8")
+    return result_bytes.decode("utf-8")
 
 def render_template(text, data):
     t = Template(text)
@@ -33,15 +62,7 @@ def render_template(text, data):
     r = t.render(c)
     return r
 
-def sanitize(value):
-    "HTML sanitizer based on html5lib"
-    try:
-        p = html5lib.HTMLParser(tokenizer=sanitizer.HTMLSanitizer)
-        h = p.parseFragment(value).toxml()
-        h = unicode_or_bust(h)
-    except Exception, exc:
-        h = "*** unable to parse content: %s" % exc
-    return h
+
 
 def unicode_or_bust(obj, encoding='utf-8'):
     if isinstance(obj, basestring):
@@ -77,7 +98,7 @@ def safe_tag(text):
 def get_page(request, obj_list, per_page=25):
     "A generic paginator"
 
-    paginator = Paginator(obj_list, per_page) 
+    paginator = Paginator(obj_list, per_page)
     try:
         pid = int(request.GET.get('page', '1'))
     except ValueError:
@@ -87,7 +108,7 @@ def get_page(request, obj_list, per_page=25):
         page = paginator.page(pid)
     except (EmptyPage, InvalidPage):
         page = paginator.page(paginator.num_pages)
-    
+
     return page
 
 def nuke(text):
@@ -129,7 +150,7 @@ def unused_sanitize(value, allowed_tags=ALLOWED_TAGS):
 
 class Params(object):
     """
-    Represents incoming parameters. 
+    Represents incoming parameters.
     Parameters with special meaning: q - search query, m - matching
     Keyword arguments
     will be defaults.
@@ -141,15 +162,15 @@ class Params(object):
     def __init__(self, **kwds):
         self.q = ''
         self.__dict__.update(kwds)
-        
+
     def parse(self, request):
         self.q = request.GET.get('q', '')
         if self.q:
             self.setr('Searching for %s' % self.q)
-    
+
     def get(self, key, default=''):
         return self.__dict__.get(key, default)
-        
+
     def update(self, data):
         self.__dict__.update(data)
 
@@ -161,7 +182,7 @@ class Params(object):
 
     def __repr__(self):
         return 'Params: %s' % self.__dict__
-    
+
     def setr(self, text):
         setattr(self, 'remind', text)
 
@@ -171,7 +192,7 @@ class Params(object):
 def response(data, **kwd):
     """Returns a http response"""
     return HttpResponse(data, **kwd)
-    
+
 def json_response(adict, **kwd):
     """Returns a http response in JSON format from a dictionary"""
     return HttpResponse(json.dumps(adict), **kwd)
@@ -202,7 +223,7 @@ def get_ip(request):
     ip2 = request.META.get('HTTP_X_FORWARDED_FOR','').split(",")[0].strip()
     ip  = ip1 or ip2 or '0.0.0.0'
     return ip
-  
+
 
 EPOCH = datetime(1970, 1, 1)
 
@@ -225,7 +246,7 @@ def hot(ups, downs, date):
 
 def rank(post, factor=5.0):
     "Computes the rank of a post"
-    
+
     # Biostar tweaks to the reddit scoring
     ups = max((post.full_score, 0)) + 1
     ups = int(ups + post.views/factor)
@@ -258,20 +279,20 @@ def strip_tags(text):
         return s.get_data()
     except Exception, exc:
         return "unable to strip tags %s" % exc
-        
+
 def suite():
     s = unittest.TestLoader().loadTestsFromTestCase(HtmlTest)
     return s
 
 if __name__ == '__main__':
-    
+
     now = datetime.now()
     lat = now + timedelta(hours=15)
-    
+
     h1 = hot(1, 0, now)
     h2 = hot(20, 0, now)
-    
+
     h3 = hot(1, 0, lat)
-    
+
     print "Upvote %4.1f, later %4.1f" % (h2-h1, h3-h1)
-    
+
