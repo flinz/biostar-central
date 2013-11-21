@@ -89,6 +89,12 @@ SERVER_EMAIL = 'default'
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'main.server.email_backend.SSLEmailBackend'
 
+# add external dependecies
+__ZIP_LIBS = [
+    path(__CURR_DIR, '..', 'libs'),
+]
+sys.path.extend(__ZIP_LIBS)
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
