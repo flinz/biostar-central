@@ -39,6 +39,8 @@ def toxmlFactory():
     def toxml(element):
         # encode/decode roundtrip required for Python 2.6 compatibility
         result_bytes = tree.implementation.tostring(element, encoding="utf-8")
+        # XXX: There must be a better way to do this within html5lib
+        result_bytes = re.sub('</?DOCUMENT_FRAGMENT>', '', result_bytes)
         return result_bytes.decode("utf-8")
 
     return toxml
