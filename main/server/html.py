@@ -15,46 +15,17 @@ from datetime import datetime, timedelta
 from math import log
 from main.server import autolink
 
-# Sanitize HTML against XSS & co
-from html5lib import HTMLParser
-from html5lib.tokenizer import HTMLTokenizer
-from html5lib.sanitizer import HTMLSanitizerMixin
-from cgi import escape
-
-from django.template import Context, Template
+import re
+import html5lib
+from html5lib import sanitizer, treebuilders
 import markdown2x
+
+from itertools import groupby
+from django.template import Context, Template
 
 # safe string transformation
 import string
 SAFE_TAG = set(string.ascii_letters + string.digits + "._-")
-
-# https://github.com/html5lib/html5lib-python/issues/9
-class Sanitizer(HTMLTokenizer):
-    def __init__(self, *a, **kw):
-        HTMLTokenizer.__init__(self, *a, **kw)
-        self._saner = HTMLSanitizerMixin()
-
-    def __iter__(self):
-        for token in HTMLTokenizer.__iter__(self):
-            saner = self._saner.sanitize_token(token)
-            if saner: yield saner
-
-def sanitize(value):
-    "HTML sanitizer based on html5lib"
-    PARSER = HTMLParser(tokenizer=Sanitizer)
-
-    print value
-    try:
-        h = _toxml(PARSER.parseFragment(value))
-        unicode_or_bust(h)
-    except Exception, exc:
-        h = "*** unable to parse content: %s" % exc
-    return h
-
-def _toxml(value):
-    tree = treebuilders.getTreeBuilder("etree")
-    result_bytes = tree.implementation.tostring(value, encoding="utf-8")
-    return result_bytes.decode("utf-8")
 
 def render_template(text, data):
     t = Template(text)
@@ -62,7 +33,27 @@ def render_template(text, data):
     r = t.render(c)
     return r
 
+def toxmlFactory():
+    tree = treebuilders.getTreeBuilder("etree")
 
+    def toxml(element):
+        # encode/decode roundtrip required for Python 2.6 compatibility
+        result_bytes = tree.implementation.tostring(element, encoding="utf-8")
+        return result_bytes.decode("utf-8")
+
+    return toxml
+
+
+def sanitize(value):
+    "HTML sanitizer based on html5lib"
+    try:
+        toxml = toxmlFactory()
+        p = html5lib.HTMLParser(tokenizer=sanitizer.HTMLSanitizer)
+        h = toxml(p.parseFragment(value))
+        h = unicode_or_bust(h)
+    except Exception, exc:
+        h = "*** unable to parse content: %s" % exc
+    return h
 
 def unicode_or_bust(obj, encoding='utf-8'):
     if isinstance(obj, basestring):
