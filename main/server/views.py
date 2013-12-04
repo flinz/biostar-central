@@ -127,6 +127,7 @@ def apply_sort(request, posts, order, sticky=True):
 SORT_CHOICES  = "activity,rank,views,votes,answers,edit".split(',')
 DATE_FILTER   = "all time,today,this week,this month,this year".split(',')
 
+@lockdown()
 def index(request, tab='all'):
     user = request.user
     auth = user.is_authenticated()
