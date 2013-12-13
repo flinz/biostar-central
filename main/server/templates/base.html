@@ -179,7 +179,10 @@
                     <div class="nav-collapse">
                         {% nav_bar user params %}
                             {% if user.is_authenticated %}
-                                {{ user.profile.display_name }}
+								<a style="display: inline;" href="{% url 'main.server.views.user_profile' user.id %}">
+                    			<i class="icon-user"></i>
+                                	{{ user.profile.display_name }}
+                				</a>
                                 {% flair user %} <b>{% bignum user.profile.get_score %}</b>
                                 <a style="display: inline;" href={% url 'main.server.views.user_profile' user.id %}>
                                 {% browserid_logout %}
