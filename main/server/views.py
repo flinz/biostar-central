@@ -189,7 +189,7 @@ def index(request, tab='all'):
         tab, pill = tab, ""
 
     params  = html.Params(tab=tab, pill=pill, sort=sort_type, sort_choices=SORT_CHOICES, date_filter=DATE_FILTER, since=since,
-                          layout=layout, show_type=show_type, title="Bioinformatics Answers", show_search=show_search)
+                          layout=layout, show_type=show_type, title="Neuroscience Answers", show_search=show_search)
 
     # this will fill in the query (q) and the match (m)parameters
     params.parse(request)
@@ -225,9 +225,9 @@ def index(request, tab='all'):
 
     # try to set a more informative title
     title_map = dict(
-            questions="Bioinformatics Questions", unanswered="Unanswered Questions", tutorials="Bioinformatics Tutorials",
-            jobs="Bioinformatics Jobs", videos="Bioinformatics Videos", news='Bioinformatics News', tools="Bioinformatics Tools",
-            recent="Recent bioinformatics posts", planet="Bioinformatics Planet",
+            questions="Neuroscience Questions", unanswered="Unanswered Questions", tutorials="Neuroscience Tutorials",
+            jobs="Neuroscience Jobs", videos="Neuroscience Videos", news='Neuroscience News', tools="Neuroscience Tools",
+            recent="Recent neuroscience posts", planet="Neuroscience Planet",
             galaxy="Galaxy on Biostar", bookmarked="Most bookmarked",
     )
 
