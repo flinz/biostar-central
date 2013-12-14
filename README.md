@@ -43,7 +43,7 @@ You will need to initialize a number of environment variables then run the
 server:
 
     $ source conf/default.env
-    $ ./biostar.sh init import run
+    $ ./biostar.sh init run
 
 Visit the http://localhost:8080 to view your site. Enjoy!
 

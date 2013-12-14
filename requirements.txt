@@ -1,4 +1,5 @@
 whoosh
+uWSGI
 html5lib
 BeautifulSoup
 django
@@ -8,4 +9,3 @@ django_pipeline
 django_markwhat
 django_debug_toolbar
 django_browserid
-django_lockdown
