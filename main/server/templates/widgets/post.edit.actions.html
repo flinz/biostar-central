@@ -7,8 +7,12 @@
 
 
     {% if request.user.is_authenticated %}
-        {% csrf_token %}
-        <input type="hidden" value="{{post.id}}">
+		<!-- Hide csrf token in a div, otherwise, comment.js is not happy -->
+		<div style="display:none">
+         {% csrf_token %}
+		</div>
+        
+		<input type="hidden" value="{{post.id}}">
         <a class="add-comment"><span class="label">comment</span></a>
     {% else %}
         <a href="/login/"> log in to comment</a>
