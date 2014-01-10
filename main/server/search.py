@@ -55,7 +55,7 @@ def info(msg):
 
 class SearchForm(forms.Form):
     "A form representing a new question"
-    q = forms.CharField(max_length=200,  initial="", widget=forms.TextInput(attrs={'size':'50', 'class': 'span6', 'placeholder': 'Search Biostar'}))
+    q = forms.CharField(max_length=200,  initial="", widget=forms.TextInput(attrs={'size':'50', 'class': 'span6', 'placeholder': 'Search NeuroStars'}))
     t = forms.ChoiceField(choices=choices, required=False)
 
 def safe_int(val):

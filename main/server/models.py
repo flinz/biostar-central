@@ -839,7 +839,7 @@ def create_profile(sender, instance, created, *args, **kwargs):
     "Post save hook for creating user profiles on user save"
     if created:
         uuid = make_uuid()
-        display_name = html.nuke(instance.get_full_name()) or 'Biostar User'
+        display_name = html.nuke(instance.get_full_name()) or 'Astrocyte John Doe'
         # push the last_visited into the past so that it the new post counters
         UserProfile.objects.create(user=instance, uuid=uuid, display_name=display_name, last_visited=datetime(2000, 1, 1), about_me='about me')
 

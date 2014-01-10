@@ -36,7 +36,7 @@ msgstr ""
 #: templates/post.edit.html:115
 msgid ""
 "\n"
-"                    <b>Note</b>: by posting to BioStar, you agree to a <a "
+"                    <b>Note</b>: by posting to NeuroStars, you agree to a <a "
 "href=\"http://creativecommons.org/licenses/by/3.0/\">Creative Commons - "
 "Attribution</a> license.\n"
 "                "
@@ -123,11 +123,11 @@ msgid ""
 msgstr ""
 
 #: templates/openid/login.html:43
-msgid " BioStar OpenID login"
+msgid " NeuroStars OpenID login"
 msgstr ""
 
 #: templates/openid/login.html:53
-msgid "Sign In to BioStar Using Your OpenID Provider"
+msgid "Sign In to NeuroStars Using Your OpenID Provider"
 msgstr ""
 
 #: templates/openid/login.html:76
@@ -143,7 +143,7 @@ msgid "Reset"
 msgstr ""
 
 #: templates/pages/about.html:8
-msgid "About Biostar"
+msgid "About NeuroStars"
 msgstr ""
 
 #: templates/pages/about.html:16
@@ -156,7 +156,7 @@ msgid ""
 msgstr ""
 
 #: templates/widgets/nav.bar.html:15
-msgid "BioStar"
+msgid "NeuroStars"
 msgstr ""
 
 #: templates/widgets/nav.bar.html:21

@@ -1,5 +1,5 @@
 """
-Biostar views
+Views
 """
 import difflib, time, re, random
 from datetime import datetime, timedelta
@@ -228,7 +228,7 @@ def index(request, tab='all'):
             questions="Neuroscience Questions", unanswered="Unanswered Questions", tutorials="Neuroscience Tutorials",
             jobs="Neuroscience Jobs", videos="Neuroscience Videos", news='Neuroscience News', tools="Neuroscience Tools",
             recent="Recent neuroscience posts", planet="Neuroscience Planet",
-            galaxy="Galaxy on Biostar", bookmarked="Most bookmarked",
+            galaxy="Galaxy on NeuroStars", bookmarked="Most bookmarked",
     )
 
 

@@ -149,7 +149,7 @@ def stats(request, days=1):
     return HttpResponse(json, mimetype="application/json")
 
 def make_stats(days=0):
-    "This returns the json data about biostar"
+    "This returns json data"
 
     start, end = date_interval(days=days)
 
