@@ -16,16 +16,16 @@
     <h2>External Authentication</h2>
 
     <div class="par">
-        Trusted third party websites may provide user authentication for BioStar. This means
-        that a user logged into such a website may use their account to post in BioStar under
+        Trusted third party websites may provide user authentication for NeuroStars. This means
+        that a user logged into such a website may use their account to post in NeuroStars under
         the same name while keeping their account associated with the originating website.
     </div>
 
     <div class="par">
-        The external authentication takes place via requesting a BioStar URL with an authenticated message in the
+        The external authentication takes place via requesting a NeuroStars URL with an authenticated message in the
         URL parameters. The message must be a <a href="http://docs.python.org/2/library/base64.html">urlsafe base64 encoded</a>
         JSON dictionary accompanied by the HMAC digest created
-        with a secret key agreed upon by both BioStar and the third party website.
+        with a secret key agreed upon by both NeuroStars and the third party website.
 
         Three parameters need to be passed: name, data and digest corresponding
         to the pre-agreed key name, the base64 encoded data and the HMAC digest of the data. The data must contain at least

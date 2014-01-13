@@ -49,7 +49,7 @@ def request_info(request, pid):
     post = models.Post.objects.get(id=pid)
     
     params = html.Params(site_domain = settings.SITE_DOMAIN, user=user, post=post)
-    params.subject = "Your expert advice is needed at Biostar"
+    params.subject = "Your expert advice is needed at NeuroStars"
     
     if user.is_authenticated():
         params.display_name, score = user.profile.display_name, user.profile.score
@@ -62,7 +62,7 @@ def request_info(request, pid):
     disabled = score < LIMIT
     
     if disabled:
-        messages.error(request, "Note: users with fewer than %s reputation points may not send messages via Biostar. You have %s points" % (LIMIT, score))
+        messages.error(request, "Note: users with fewer than %s reputation points may not send messages via NeuroStars. You have %s points" % (LIMIT, score))
     elif 'submit' in request.POST:
         form = formdef.RequestInfo(request.POST) 
         if form.is_valid():

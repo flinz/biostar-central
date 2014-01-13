@@ -3,7 +3,7 @@
 {% load basic %}
 {% load widgets %}
 {% block title %}
-    Search - BioStar
+    Search - NeuroStars
 {% endblock %}
 
 {% block head %}
@@ -72,7 +72,7 @@
 <div class="span12">
 
 <form class="form-horizontal">
-    <legend>Search Biostar via Google</legend>
+    <legend>Search NeuroStars via Google</legend>
 </form>
    
 <div id="cse" style="width: 100%;">Loading</div>
@@ -81,7 +81,7 @@
   google.load('search', '1', {language : 'en', style : google.loader.themes.GREENSKY});
   google.setOnLoadCallback(function() {
     var customSearchOptions = {};  var customSearchControl = new google.search.CustomSearchControl(
-      '003596843386727440968:raditaczxza', customSearchOptions);
+      '011585779972124617449:ydkkh-04n-u', customSearchOptions);
     customSearchControl.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET);
     customSearchControl.draw('cse');
   }, true);

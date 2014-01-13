@@ -252,13 +252,13 @@ To ignore the request simply ignore this email.
 ACCOUNT_APPROVAL_EMAIL = """
 Hello,
 
-The requested BioStar account merge has been completed.
+The requested NeuroStars account merge has been completed.
 
 Profile url: http://%(domain)s%(profile_url)s
 
 cheers,
 
-the BioStar Team
+the NeuroStars Team
 """
 
 @login_required(redirect_field_name='/login/')
@@ -287,7 +287,7 @@ def request_merge(request):
                 )
                 body = ACCOUNT_MERGE_EMAIL % fill
                 logger.info('sending email to %s' % settings.SERVER_EMAIL)
-                send_mail(subject='BioStar: account merge request', message=body, from_email=settings.DEFAULT_FROM_EMAIL, recipient_list=[ settings.DEFAULT_FROM_EMAIL ], fail_silently=False)
+                send_mail(subject='NeuroStar: account merge request', message=body, from_email=settings.DEFAULT_FROM_EMAIL, recipient_list=[ settings.DEFAULT_FROM_EMAIL ], fail_silently=False)
                 messages.info(request, "Your request for account merge has been submitted for review.")
                 return html.redirect( user.profile.get_absolute_url() )
             except Exception, exc:
@@ -329,7 +329,7 @@ def approve_merge(request, master_id, remove_id):
             domain=settings.SITE_DOMAIN, profile_url=master.profile.get_absolute_url()
         )
         body = ACCOUNT_APPROVAL_EMAIL % fill
-        send_mail(subject='BioStar: account merge complete', message=body, from_email=settings.DEFAULT_FROM_EMAIL, recipient_list=[ settings.SERVER_EMAIL, master.email ], fail_silently=False)
+        send_mail(subject='NeuroStar: account merge complete', message=body, from_email=settings.DEFAULT_FROM_EMAIL, recipient_list=[ settings.SERVER_EMAIL, master.email ], fail_silently=False)
     except Exception, exc:
         messages.error(request, 'Merge error: %s' % exc)
         return html.redirect("/")
@@ -351,7 +351,7 @@ def authorize_external_user(request, data):
         # this user already exists in the database
         user = users[0]
         if user.profile.type != USER_EXTERNAL:
-            raise Exception("this username already exists in BioStar for a local user")
+            raise Exception("this username already exists in NeuroStar for a local user")
 
     else:
         # create a new user
@@ -360,7 +360,7 @@ def authorize_external_user(request, data):
         user.save()
 
         # now update the profile
-        user.profile.display_name = data.get("display_name", "Biostar User")
+        user.profile.display_name = data.get("display_name", "Astrocyte John Doe")
         user.profile.type = USER_EXTERNAL
         user.profile.my_tags = "galaxy"
         user.profile.save()

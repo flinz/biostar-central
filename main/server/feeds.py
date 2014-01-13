@@ -8,9 +8,9 @@ from datetime import datetime, timedelta
 SITE = Site.objects.get(id=settings.SITE_ID)
 
 class LatestEntriesFeed(Feed):
-    title = "Biostars.org latest!"
+    title = "NeuroStarss.org latest!"
     link = "/"
-    description = "Latest 25 posts from the Biostar server"
+    description = "Latest 25 posts from the NeuroStars server"
 
     def items(self):
         # the feed is delayed to reduce spam
@@ -38,7 +38,7 @@ class LatestEntriesFeed(Feed):
 
 
 class NotificationFeed(Feed):
-    title = "Biostar notifications"
+    title = "NeuroStars notifications"
     link = "/"
     description = "Latest 25 notification for a given user"
 
@@ -59,9 +59,9 @@ class NotificationFeed(Feed):
         return item.html
 
 class PostBase(Feed):
-    title = "Biostar Post Base"
+    title = "NeuroStars Post Base"
     link = "/"
-    description = "Biostar Post Base Class"
+    description = "NeuroStars Post Base Class"
 
     def get_object(self, request, text):
         return text.split('+')[:10]
@@ -80,24 +80,24 @@ class PostBase(Feed):
         return "http://%s%s" %(SITE.domain, obj.get_short_url())
 
 class TagsFeed(PostBase):
-    title = "Biostar Tags"
+    title = "NeuroStars Tags"
     link = "/"
-    description = "Biostar - latest posts matching tags"
+    description = "NeuroStars - latest posts matching tags"
 
     def get_object(self, request, text):
         return text
         
     def title(self, obj):
-        return "Biostar tags %s" % obj
+        return "NeuroStars tags %s" % obj
  
     def items(self, obj):
         posts = models.query_by_tags(user=None, text=obj).order_by('-creation_date')
         return posts[:25]
 
 class PostTypeFeed(PostBase):
-    title = "Feed to a specific BioStar post type"
+    title = "Feed to a specific NeuroStars post type"
     link = "/"
-    description = "Biostar - latest posts matching a post type"
+    description = "NeuroStars - latest posts matching a post type"
 
     def get_object(self, request, text):
         # reverse mapping for quick lookups
@@ -107,7 +107,7 @@ class PostTypeFeed(PostBase):
         
     def title(self, obj):
         codes, text = obj
-        return "Biostar %s" % text
+        return "NeuroStars %s" % text
  
     def items(self, obj):
         codes, text = obj
@@ -115,12 +115,12 @@ class PostTypeFeed(PostBase):
         return posts[:25]
 
 class PostFeed(PostBase):
-    title = "Biostar Post"
+    title = "NeuroStars Post"
     link = "/"
-    description = "Biostar post activity"
+    description = "NeuroStars post activity"
 
     def title(self, obj):
-        return "Biostar activity on %s" % "+".join(obj)
+        return "NeuroStars activity on %s" % "+".join(obj)
 
     def items(self, obj):
         posts = models.Post.objects.filter(root__id__in=obj).order_by('-creation_date')
@@ -128,19 +128,19 @@ class PostFeed(PostBase):
 
 class UserFeed(PostBase):
     def title(self, obj):
-        return "Biostar user %s" % "+".join(obj)
+        return "NeuroStars user %s" % "+".join(obj)
 
     def items(self, obj):
         posts = models.Post.objects.filter(author__id__in=obj).order_by('-creation_date')
         return posts[:25]
 
 class MyTagsFeed(PostBase):
-    title = "Biostar MyTags"
+    title = "NeuroStars MyTags"
     link = "/"
-    description = "Biostar MyTags"
+    description = "NeuroStars MyTags"
 
     def title(self, obj):
-        return "Biostar my tags for %s" % obj.profile.display_name
+        return "NeuroStars my tags for %s" % obj.profile.display_name
 
     def get_object(self, request, uuid):
         obj = get_object_or_404(models.User, profile__uuid=uuid)
