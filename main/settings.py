@@ -5,7 +5,7 @@
 import os, sys, re
 
 # database migrations via Django South
-import south
+# import south
 
 # we now required django celery to be present
 import djcelery
@@ -32,7 +32,8 @@ TEMPLATE_STRING_IF_INVALID = "*** MISSING ***"
 SESSION_UPDATE_TIME = 10 * 60  # in seconds
 
 ADMINS = (
-    ('Default Admin', 'your-mail-here@your-server-here.com'),
+    #('Default Admin', 'your-mail-here@your-server-here.com'),
+    ('Alexcyte John Doe', 'seeholzer@gmail.com'),
 )
 
 ADMIN_EMAILS = [ r[1] for r in ADMINS ]
@@ -73,6 +74,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'AUTOCOMMIT': True, # Default in Django 1.6, but still does not work with sqlite3 :/
         'NAME': DATABASE_NAME, # Or path to database file if using sqlite3.
         'USER': '', # Not used with sqlite3.
         'PASSWORD': '', # Not used with sqlite3.
@@ -94,7 +96,6 @@ EMAIL_BACKEND = 'main.server.email_backend.SSLEmailBackend'
 # add external dependecies
 __ZIP_LIBS = [
     path(__CURR_DIR, '..', 'libs'),
-    path(__CURR_DIR, '..', 'libs', 'libraries.zip'),
 ]
 sys.path.extend(__ZIP_LIBS)
 
@@ -105,7 +106,7 @@ sys.path.extend(__ZIP_LIBS)
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'Europe/Berlin'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -159,8 +160,8 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    # 'compressor.finders.CompressorFinder',
-    #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    #'compressor.finders.CompressorFinder',
+    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # List of callables that know how to import templates from various sources.
@@ -195,7 +196,6 @@ DEBUG_TOOLBAR_CONFIG = {
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache' if DEBUG else 'django.core.cache.backends.locmem.LocMemCache',
-        #'BACKEND':  'django.core.cache.backends.locmem.LocMemCache',
         'LOCATION': 'unique-snowflake'
     }
 }
@@ -212,15 +212,15 @@ TEMPLATE_DIRS = [
 ]
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.contrib.auth.context_processors.auth",
-    "django.core.context_processors.debug",
-    'django.core.context_processors.request',
-    'django.core.context_processors.static',
-    'django.contrib.messages.context_processors.messages',
-    'django.core.context_processors.i18n',
-    "main.context.extras",
-    "main.context.popular_tags",
-    'django_browserid.context_processors.browserid'
+      'django.contrib.auth.context_processors.auth',
+      'django_browserid.context_processors.browserid',
+      'django.core.context_processors.debug',
+      'django.core.context_processors.request',
+      'django.core.context_processors.static',
+      'django.contrib.messages.context_processors.messages',
+      'django.core.context_processors.i18n',
+      'main.context.extras',
+      'main.context.popular_tags'
 )
 
 AUTH_PROFILE_MODULE = "server.UserProfile"
@@ -228,9 +228,8 @@ AUTH_PROFILE_MODULE = "server.UserProfile"
 ROOT_URLCONF = 'main.urls'
 
 AUTHENTICATION_BACKENDS = (
-    #'django_openid_auth.auth.OpenIDBackend',
     'django.contrib.auth.backends.ModelBackend',
-    'django_browserid.auth.BrowserIDBackend',
+    'django_browserid.auth.BrowserIDBackend'
 )
 
 OPENID_CREATE_USERS = True
@@ -245,26 +244,23 @@ LOGIN_REDIRECT_URL = '/'
 
 INSTALLED_APPS = [
     'django.contrib.auth',
+    'django_browserid',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    #'django.contrib.markup',
+    'django_markwhat',
     'django.contrib.messages',
-    # Uncomment the next line to enable the admin:
     'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'kombu.transport.django',
     'south',
     'djcelery',
-    #'compressor',
+    'pipeline',
     'main.server',
-    #'django_openid_auth',
     'django.contrib.sitemaps',
-    'django_browserid'  # Load after auth
 ]
 
 # add debugging tools
@@ -317,6 +313,10 @@ LOGGING = {
         'main.server.search': {
             'handlers': ['console'],
             'level': 'INFO',
+        },
+           'django_browserid': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
         }
     }
 }
@@ -352,8 +352,7 @@ MAX_POST_SIZE = 20000
 RECENT_VOTE_COUNT = 10
 RECENT_TAG_COUNT = 30
 # set the tag names are to be displayed on the main page
-IMPORTANT_TAG_NAMES = "rna-seq chip-seq assembly snp metagenomics vcf cnv mirna indel bwa bowtie bedtools biopython bioperl".split()
-
+IMPORTANT_TAG_NAMES = "neuroinformatics neuron nidash fmri eeg meg".split()
 
 # the interval specified in hours
 # that user activity throttling is computed over
@@ -374,9 +373,9 @@ POST_VIEW_UPDATE = 30
 
 # TEMPLATE LAYOUT,
 # One may override these variables from the settings file
-# 
+#
 
-# this data governs the layout of the PILL_BAR    
+# this data governs the layout of the PILL_BAR
 # bar name, link url, link name, counter key
 ANON_PILL_BAR = [
     ("all", "/", "Show&nbsp;All", "" ),
@@ -386,7 +385,6 @@ ANON_PILL_BAR = [
     ("unanswered", "/show/unanswered/", "Unanswered", "Unanswered" ),
     ("forum", "/show/forum/", "Forum", "Forum" ),
     ("howto", "/show/howto/", "How To", "howto" ),
-    #("galaxy", "/show/galaxy/", "Galaxy", "Galaxy" ),
     ("jobs", "/show/jobs/", "Jobs", "Job" ),
     ("planet", "/show/planet/", "Planet", "Blog" ),
 
@@ -407,13 +405,12 @@ USER_PILL_BAR = [
     ("unanswered", "/show/unanswered/", "Unanswered", "Unanswered" ),
     ("forum", "/show/forum/", "Forum", "Forum" ),
     ("howto", "/show/howto/", "How To", "howto" ),
-    #("galaxy", "/show/galaxy/", "Galaxy", "Galaxy" ),
     ("jobs", "/show/jobs/", "Jobs", "Job" ),
     ("planet", "/show/planet/", "Planet", "Blog" ),
 
 ]
 
-SHOW_ADS = True
+SHOW_ADS = False
 
 #
 # remapping the templates to local versions
@@ -429,10 +426,6 @@ TEMPLATE_ROWS = {
 
 # how long will an ad be active by default
 DEFAULT_AD_EXPIRATION = 1
-
-# used during testing external authentication
-EXTERNAL_AUTHENICATION_TEST_URL=""
-EXTERNAL_AUTHENICATION_TEST_KEY="TEST-KEY"
 
 # version check, we can do it at the end since
 # the version is only required in subsequent modules
