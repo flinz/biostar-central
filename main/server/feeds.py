@@ -5,7 +5,7 @@ from django.conf import settings
 from django.contrib.sites.models import Site
 from datetime import datetime, timedelta
 
-SITE = Site.objects.get(id=settings.SITE_ID)
+#SITE = Site.objects.get(id=settings.SITE_ID)
 
 class LatestEntriesFeed(Feed):
     title = "NeuroStarss.org latest!"
