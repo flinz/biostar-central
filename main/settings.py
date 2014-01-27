@@ -5,7 +5,11 @@
 import os, sys, re
 
 # database migrations via Django South
+<<<<<<< HEAD
 # import south
+=======
+import south
+>>>>>>> Added local settings and static content for local copy
 
 # we now required django celery to be present
 import djcelery
@@ -32,8 +36,12 @@ TEMPLATE_STRING_IF_INVALID = "*** MISSING ***"
 SESSION_UPDATE_TIME = 10 * 60  # in seconds
 
 ADMINS = (
+<<<<<<< HEAD
     #('Default Admin', 'your-mail-here@your-server-here.com'),
     ('Alexcyte John Doe', 'seeholzer@gmail.com'),
+=======
+    ('Default Admin', 'your-mail-here@your-server-here.com'),
+>>>>>>> Added local settings and static content for local copy
 )
 
 ADMIN_EMAILS = [ r[1] for r in ADMINS ]
@@ -74,7 +82,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+<<<<<<< HEAD
         'AUTOCOMMIT': True, # Default in Django 1.6, but still does not work with sqlite3 :/
+=======
+>>>>>>> Added local settings and static content for local copy
         'NAME': DATABASE_NAME, # Or path to database file if using sqlite3.
         'USER': '', # Not used with sqlite3.
         'PASSWORD': '', # Not used with sqlite3.
@@ -96,6 +107,10 @@ EMAIL_BACKEND = 'main.server.email_backend.SSLEmailBackend'
 # add external dependecies
 __ZIP_LIBS = [
     path(__CURR_DIR, '..', 'libs'),
+<<<<<<< HEAD
+=======
+    path(__CURR_DIR, '..', 'libs', 'libraries.zip'),
+>>>>>>> Added local settings and static content for local copy
 ]
 sys.path.extend(__ZIP_LIBS)
 
@@ -106,7 +121,11 @@ sys.path.extend(__ZIP_LIBS)
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
+<<<<<<< HEAD
 TIME_ZONE = 'Europe/Berlin'
+=======
+TIME_ZONE = 'America/Chicago'
+>>>>>>> Added local settings and static content for local copy
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -160,8 +179,13 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+<<<<<<< HEAD
     #'compressor.finders.CompressorFinder',
     'django.contrib.staticfiles.finders.DefaultStorageFinder',
+=======
+    # 'compressor.finders.CompressorFinder',
+    #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+>>>>>>> Added local settings and static content for local copy
 )
 
 # List of callables that know how to import templates from various sources.
@@ -196,6 +220,10 @@ DEBUG_TOOLBAR_CONFIG = {
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache' if DEBUG else 'django.core.cache.backends.locmem.LocMemCache',
+<<<<<<< HEAD
+=======
+        #'BACKEND':  'django.core.cache.backends.locmem.LocMemCache',
+>>>>>>> Added local settings and static content for local copy
         'LOCATION': 'unique-snowflake'
     }
 }
@@ -212,6 +240,7 @@ TEMPLATE_DIRS = [
 ]
 
 TEMPLATE_CONTEXT_PROCESSORS = (
+<<<<<<< HEAD
       'django.contrib.auth.context_processors.auth',
       'django_browserid.context_processors.browserid',
       'django.core.context_processors.debug',
@@ -221,6 +250,17 @@ TEMPLATE_CONTEXT_PROCESSORS = (
       'django.core.context_processors.i18n',
       'main.context.extras',
       'main.context.popular_tags'
+=======
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    'django.core.context_processors.request',
+    'django.core.context_processors.static',
+    'django.contrib.messages.context_processors.messages',
+    'django.core.context_processors.i18n',
+    "main.context.extras",
+    "main.context.popular_tags",
+    'django_browserid.context_processors.browserid'
+>>>>>>> Added local settings and static content for local copy
 )
 
 AUTH_PROFILE_MODULE = "server.UserProfile"
@@ -228,8 +268,14 @@ AUTH_PROFILE_MODULE = "server.UserProfile"
 ROOT_URLCONF = 'main.urls'
 
 AUTHENTICATION_BACKENDS = (
+<<<<<<< HEAD
     'django.contrib.auth.backends.ModelBackend',
     'django_browserid.auth.BrowserIDBackend'
+=======
+    #'django_openid_auth.auth.OpenIDBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    'django_browserid.auth.BrowserIDBackend',
+>>>>>>> Added local settings and static content for local copy
 )
 
 OPENID_CREATE_USERS = True
@@ -244,23 +290,42 @@ LOGIN_REDIRECT_URL = '/'
 
 INSTALLED_APPS = [
     'django.contrib.auth',
+<<<<<<< HEAD
     'django_browserid',
+=======
+>>>>>>> Added local settings and static content for local copy
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+<<<<<<< HEAD
     'django_markwhat',
     'django.contrib.messages',
     'django.contrib.admin',
+=======
+    #'django.contrib.markup',
+    'django.contrib.messages',
+    # Uncomment the next line to enable the admin:
+    'django.contrib.admin',
+    # Uncomment the next line to enable admin documentation:
+>>>>>>> Added local settings and static content for local copy
     'django.contrib.admindocs',
     'kombu.transport.django',
     'south',
     'djcelery',
+<<<<<<< HEAD
     'pipeline',
     'main.server',
     'django.contrib.sitemaps',
+=======
+    #'compressor',
+    'main.server',
+    #'django_openid_auth',
+    'django.contrib.sitemaps',
+    'django_browserid'  # Load after auth
+>>>>>>> Added local settings and static content for local copy
 ]
 
 # add debugging tools
@@ -313,10 +378,13 @@ LOGGING = {
         'main.server.search': {
             'handlers': ['console'],
             'level': 'INFO',
+<<<<<<< HEAD
         },
            'django_browserid': {
             'handlers': ['console'],
             'level': 'DEBUG',
+=======
+>>>>>>> Added local settings and static content for local copy
         }
     }
 }
@@ -352,7 +420,12 @@ MAX_POST_SIZE = 20000
 RECENT_VOTE_COUNT = 10
 RECENT_TAG_COUNT = 30
 # set the tag names are to be displayed on the main page
+<<<<<<< HEAD
 IMPORTANT_TAG_NAMES = "neuroinformatics neuron nidash fmri eeg meg".split()
+=======
+IMPORTANT_TAG_NAMES = "rna-seq chip-seq assembly snp metagenomics vcf cnv mirna indel bwa bowtie bedtools biopython bioperl".split()
+
+>>>>>>> Added local settings and static content for local copy
 
 # the interval specified in hours
 # that user activity throttling is computed over
@@ -373,9 +446,15 @@ POST_VIEW_UPDATE = 30
 
 # TEMPLATE LAYOUT,
 # One may override these variables from the settings file
+<<<<<<< HEAD
 #
 
 # this data governs the layout of the PILL_BAR
+=======
+# 
+
+# this data governs the layout of the PILL_BAR    
+>>>>>>> Added local settings and static content for local copy
 # bar name, link url, link name, counter key
 ANON_PILL_BAR = [
     ("all", "/", "Show&nbsp;All", "" ),
@@ -385,6 +464,10 @@ ANON_PILL_BAR = [
     ("unanswered", "/show/unanswered/", "Unanswered", "Unanswered" ),
     ("forum", "/show/forum/", "Forum", "Forum" ),
     ("howto", "/show/howto/", "How To", "howto" ),
+<<<<<<< HEAD
+=======
+    #("galaxy", "/show/galaxy/", "Galaxy", "Galaxy" ),
+>>>>>>> Added local settings and static content for local copy
     ("jobs", "/show/jobs/", "Jobs", "Job" ),
     ("planet", "/show/planet/", "Planet", "Blog" ),
 
@@ -405,12 +488,20 @@ USER_PILL_BAR = [
     ("unanswered", "/show/unanswered/", "Unanswered", "Unanswered" ),
     ("forum", "/show/forum/", "Forum", "Forum" ),
     ("howto", "/show/howto/", "How To", "howto" ),
+<<<<<<< HEAD
+=======
+    #("galaxy", "/show/galaxy/", "Galaxy", "Galaxy" ),
+>>>>>>> Added local settings and static content for local copy
     ("jobs", "/show/jobs/", "Jobs", "Job" ),
     ("planet", "/show/planet/", "Planet", "Blog" ),
 
 ]
 
+<<<<<<< HEAD
 SHOW_ADS = False
+=======
+SHOW_ADS = True
+>>>>>>> Added local settings and static content for local copy
 
 #
 # remapping the templates to local versions
@@ -427,8 +518,19 @@ TEMPLATE_ROWS = {
 # how long will an ad be active by default
 DEFAULT_AD_EXPIRATION = 1
 
+<<<<<<< HEAD
+=======
+# used during testing external authentication
+EXTERNAL_AUTHENICATION_TEST_URL=""
+EXTERNAL_AUTHENICATION_TEST_KEY="TEST-KEY"
+
+>>>>>>> Added local settings and static content for local copy
 # version check, we can do it at the end since
 # the version is only required in subsequent modules
 if sys.version_info < (2, 6):
     sys.stderr.write('*** this code requires python 2.6 or higher ***')
+<<<<<<< HEAD
     sys.exit()
+=======
+    sys.exit()
+>>>>>>> Added local settings and static content for local copy
