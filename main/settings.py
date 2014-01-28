@@ -260,6 +260,9 @@ INSTALLED_APPS = [
     'djcelery',
     'pipeline',
     'main.server',
+
+    'notification',
+    'main.notifications',
     'django.contrib.sitemaps',
 ]
 
