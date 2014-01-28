@@ -558,16 +558,20 @@ def post_moderate(request, post, user, status, date=None):
     return url
 
 @transaction.commit_on_success
-def send_note(sender, target, content, type=NOTE_USER, unread=True, date=None, both=False, url=''):
+def send_note(sender, target, content, type=NOTE_USER, unread=True, date=None, both=False, url='', send_email=False):
     "Sends a note to target"
     date = date or datetime.now()
     url = url[:200]
     Note.objects.create(sender=sender, target=target, content=content, type=type, unread=unread, date=date, url=url)
+
+    if send_email:
+        print "HERE SEND EMAIL"
+        tasks.send_email_note(sender=sender, target=target, content=content, type=type, date=date, url=url)
+
     both = both and (sender != target)
     if both:
         #send a note to the sender as well
         Note.objects.create(sender=sender, target=sender, content=content, type=type, unread=False, date=date, url=url)
-
 def decorate_posts(posts, user):
     """
     Decorates a queryset so that each returned object has extra attributes.
@@ -637,14 +641,22 @@ def post_create_notification(post):
         authors.add(child.author)
 
     text = notegen.post_action(user=post.author, post=post)
-
+    print text
     # generate emails for people that want to follow a post via email
     #XXX for row in Watcher.objects.filter(pk=post.id, type=Watcher.EMAIL).select_related('user'):
     #    tasks.send_test_email()
 
     for target in authors:
         unread = (target != post.author) # the unread flag will be off for the post author
-        send_note(sender=post.author, target=target, content=text, type=NOTE_USER, unread=unread, date=post.creation_date, url=post.get_absolute_url() )
+        
+        send_email = False
+        # get the true root of this post, check whether it is bookmarked
+        if True or target != post.author:
+            bookmark_root = post.parent
+            votes = Vote.objects.filter(author=target, post=bookmark_root, type=VOTE_BOOKMARK)
+            send_email = len(votes)>0
+        
+        send_note(sender=post.author, target=target, content=text, type=NOTE_USER, unread=unread, date=post.creation_date, url=post.get_absolute_url(), send_email=send_email )
 
 
 class Note(models.Model):
