@@ -41,8 +41,8 @@ def send_email_note(sender, target, content, type=NOTE_USER, date=None, url=''):
     content_html = unicode_or_bust(content_md)
 
     # parse internal links to contain the domain name, explicitly not using regex for speedup
-    content_html_split = content_html.split("<a href='/p/")
-    content_html = ("<a href='http://" + settings.SITE_DOMAIN + "/p/").join(content_html_split)
+    content_html_split = content_html.split("<a href='/")
+    content_html = ("<a href='http://" + settings.SITE_DOMAIN + "/").join(content_html_split)
     
     subject = notegen.email_subject(type)
     sender  = settings.DEFAULT_FROM_EMAIL
