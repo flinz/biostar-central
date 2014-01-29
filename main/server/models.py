@@ -564,8 +564,8 @@ def send_note(sender, target, content, type=NOTE_USER, unread=True, date=None, b
     url = url[:200]
     Note.objects.create(sender=sender, target=target, content=content, type=type, unread=unread, date=date, url=url)
 
+    # TODO incorporate here logic for checking of WATCH by users regarding events.
     if send_email:
-        print "HERE SEND EMAIL"
         tasks.send_email_note(sender=sender, target=target, content=content, type=type, date=date, url=url)
 
     both = both and (sender != target)
@@ -641,7 +641,7 @@ def post_create_notification(post):
         authors.add(child.author)
 
     text = notegen.post_action(user=post.author, post=post)
-    print text
+
     # generate emails for people that want to follow a post via email
     #XXX for row in Watcher.objects.filter(pk=post.id, type=Watcher.EMAIL).select_related('user'):
     #    tasks.send_test_email()
@@ -651,10 +651,11 @@ def post_create_notification(post):
         
         send_email = False
         # get the true root of this post, check whether it is bookmarked
-        if True or target != post.author:
+        if unread: # not to the post author
             bookmark_root = post.parent
             votes = Vote.objects.filter(author=target, post=bookmark_root, type=VOTE_BOOKMARK)
-            send_email = len(votes)>0
+            if len(votes)>0:
+                send_email = True
         
         send_note(sender=post.author, target=target, content=text, type=NOTE_USER, unread=unread, date=post.creation_date, url=post.get_absolute_url(), send_email=send_email )
 

@@ -3,6 +3,11 @@ from django.conf import settings
 from celery import task
 from django.core.mail import send_mail
 from django.contrib.sites.models import Site
+import markdown2x
+from main.server import autolink
+from main.server.html import unicode_or_bust, strip_tags
+from main.server import notegen
+from django.core.mail import EmailMultiAlternatives
 
 # import all constants
 from main.server.const import *
@@ -28,14 +33,26 @@ def send_email_note(sender, target, content, type=NOTE_USER, date=None, url=''):
     Sends an email notification for a note. 
     """
 
-    subject = "NeuroStars: Activity in a bookmarked question"
-    sender  = "seeholzer@gmail.com"
-    recipient = "seeholzer@gmail.com"
-    body = content + '\n\n' + url
+    md = markdown2x.Markdown(safe_mode=False, extras=["code-friendly", "link-patterns"],
+                             link_patterns=autolink.patterns)
 
-    print "sending email notice to %s: \n %s \n %s" % (target.email, subject, body)
-    send_mail(subject=subject, from_email=settings.DEFAULT_FROM_EMAIL, message=content, recipient_list=[recipient], fail_silently=False)
-	#send_mail(subject, body, sender, [recipient], fail_silently=False)
+    # get html content
+    content_md = md.convert(content)
+    content_html = unicode_or_bust(content_md)
 
+    # parse internal links to contain the domain name, explicitly not using regex for speedup
+    content_html_split = content_html.split("<a href='/p/")
+    content_html = ("<a href='http://" + settings.SITE_DOMAIN + "/p/").join(content_html_split)
+    
+    subject = notegen.email_subject(type)
+    sender  = settings.DEFAULT_FROM_EMAIL
+    recipient = target.email
+
+    #print "sending email notice to %s: \n %s \n %s" % (target.email, subject, content_html)
+    # prepare multipart message and send
+    msg = EmailMultiAlternatives(subject, strip_tags(content_html), sender, [recipient])
+    msg.attach_alternative(content_html, "text/html")
+    msg.send()
+    
 if __name__ == '__main__':
     send_test_email()
