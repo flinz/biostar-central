@@ -84,11 +84,11 @@ DATABASES = {
 }
 
 # email specific settings
-EMAIL_HOST = 'smtp.naabster.com'
+EMAIL_HOST = 'server'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'neurostars@spikespike.net'
-EMAIL_HOST_PASSWORD = 'nrstrs001!'
-DEFAULT_FROM_EMAIL = 'neurostars@spikespike.net'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = 'password'
+DEFAULT_FROM_EMAIL = ''
 SERVER_EMAIL = 'default'
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'main.server.email_backend.SSLEmailBackend'
