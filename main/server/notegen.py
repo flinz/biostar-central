@@ -49,5 +49,7 @@ def private_message(user, target, text):
 def email_subject(type):
     if type == NOTE_USER:
         return "NeuroStars.org: Activity in a bookmarked question"
+    elif type == NOTE_MODERATOR:
+        return "NeuroStars.org: Moderator activity on one of your contributions"
     else:
         return "NeuroStars.org: Email alert"
