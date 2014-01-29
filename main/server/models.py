@@ -562,7 +562,7 @@ def send_note(sender, target, content, type=NOTE_USER, unread=True, date=None, b
     "Sends a note to target"
     date = date or datetime.now()
     url = url[:200]
-    Note.objects.create(sender=sender, target=target, content=content, type=type, unread=unread, date=date, url=url)
+    note = Note.objects.create(sender=sender, target=target, content=content, type=type, unread=unread, date=date, url=url)
 
     # TODO incorporate here logic for checking of WATCH by users regarding events.
     if send_email:
@@ -572,6 +572,8 @@ def send_note(sender, target, content, type=NOTE_USER, unread=True, date=None, b
     if both:
         #send a note to the sender as well
         Note.objects.create(sender=sender, target=sender, content=content, type=type, unread=False, date=date, url=url)
+    return note
+
 def decorate_posts(posts, user):
     """
     Decorates a queryset so that each returned object has extra attributes.
