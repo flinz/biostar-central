@@ -84,11 +84,11 @@ DATABASES = {
 }
 
 # email specific settings
-EMAIL_HOST = 'server'
+EMAIL_HOST = 'smtp.yourserver.com'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = ''
+EMAIL_HOST_USER = 'user'
 EMAIL_HOST_PASSWORD = 'password'
-DEFAULT_FROM_EMAIL = ''
+DEFAULT_FROM_EMAIL = 'default'
 SERVER_EMAIL = 'default'
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'main.server.email_backend.SSLEmailBackend'
