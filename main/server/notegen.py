@@ -49,9 +49,16 @@ def private_message(user, target, text):
     return text
 
 def email_subject(type):
+
+    # Get name from settings, if not set use domain
+    try:
+        name = settings.SITE_NAME
+    except AttributeError:
+        name = settings.SITE_DOMAIN
+    
     if type == NOTE_USER:
-        return settings.SITE_NAME + ": Activity in a bookmarked question"
+        return name + ": Activity in a bookmarked question"
     elif type == NOTE_MODERATOR:
-        return settings.SITE_NAME + ": Moderator activity on one of your contributions"
+        return name + ": Moderator activity on one of your contributions"
     else:
-        return settings.SITE_NAME + "NeuroStars.org: Email alert"
+        return name + "NeuroStars.org: Email alert"
