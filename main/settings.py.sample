@@ -116,7 +116,7 @@ SITE_ID = 1
 # the domain for this site
 SITE_DOMAIN = 'localhost:8080'
 
-# the domain for this site
+# the name of this site
 SITE_NAME = 'BioStars.org'
 
 # added a custom test runner
