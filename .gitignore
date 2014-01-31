@@ -10,5 +10,5 @@ coverage.xml
 /report/*
 /apache/export/*
 /libs/*
-#/main/settings.py
+/main/settings.py
 #/main/static
